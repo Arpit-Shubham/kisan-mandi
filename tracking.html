@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>बुकिंग ट्रैकिंग / Booking Tracking — किसानमंडी KisanMandi</title>
+<meta name="description" content="अपनी बुकिंग की प्रगति और विवरण देखें / See your booking's progress and details." />
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body data-page="status">
+
+<div class="app">
+  <header class="app-header">
+    <button class="back-btn" onclick="window.location.href='home.html'" aria-label="वापस जाएं / Go back">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+    </button>
+    <div class="title-group">
+      <h1>बुकिंग ट्रैकिंग / Booking Tracking</h1>
+    </div>
+  </header>
+
+  <main class="app-main">
+    <ol class="track-list" aria-label="बुकिंग प्रगति / Booking progress">
+      <li class="track-item done">
+        <span class="connector" aria-hidden="true"></span>
+        <span class="track-icon" aria-hidden="true">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+        </span>
+        <div class="content">
+          <p class="hi">स्लॉट बुक हुआ / Slot Booked</p>
+          <p class="en">Completed - 15 Oct, 08:30 AM</p>
+        </div>
+      </li>
+
+      <li class="track-item done">
+        <span class="connector" aria-hidden="true"></span>
+        <span class="track-icon" aria-hidden="true">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+        </span>
+        <div class="content">
+          <p class="hi">कतार में हैं / In Queue</p>
+          <p class="en">Passed Gate Entry - 16 Oct, 09:12 AM</p>
+        </div>
+      </li>
+
+      <li class="track-item active">
+        <span class="connector" aria-hidden="true"></span>
+        <span class="track-icon" aria-hidden="true">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/></svg>
+        </span>
+        <div class="content">
+          <p class="hi">प्रक्रिया में / Under Process</p>
+          <p class="en">Crop Quality Check ongoing</p>
+        </div>
+      </li>
+
+      <li class="track-item">
+        <span class="track-icon" aria-hidden="true">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/></svg>
+        </span>
+        <div class="content">
+          <p class="hi">पूर्ण / Completed</p>
+          <p class="en">Payment &amp; Weighing receipt pending</p>
+        </div>
+      </li>
+    </ol>
+
+    <section class="details-box">
+      <div class="head">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>
+        बुक किया गया विवरण / Booking Details
+      </div>
+      <div class="details-grid">
+        <div>
+          <p class="en">केंद्र / Mandi Center</p>
+          <p class="val" id="detail-center">हापुड़ मंडी / Hapur</p>
+        </div>
+        <div>
+          <p class="en">तारीख / Date</p>
+          <p class="val" id="detail-date">15 Oct 2026</p>
+        </div>
+        <div>
+          <p class="en">समय / Selected Time</p>
+          <p class="val" id="detail-time">08:00 - 10:00 AM</p>
+        </div>
+        <div>
+          <p class="en">फसल / Crop Type</p>
+          <p class="val" id="detail-crop">गेहूं / Wheat</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <nav class="bottom-nav" aria-label="मुख्य नेविगेशन / Main navigation">
+    <button class="nav-item" data-nav="home" data-href="home.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/><path d="M9 22V12h6v10"/></svg>
+      <span class="hi">होम</span><span class="en">Home</span>
+    </button>
+    <button class="nav-item" data-nav="bookings" data-href="book-slot.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+      <span class="hi">बुकिंग</span><span class="en">Bookings</span>
+    </button>
+    <button class="nav-item" data-nav="queue" data-href="queue-status.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      <span class="hi">कतार</span><span class="en">Queue</span>
+    </button>
+    <button class="nav-item" data-nav="status" data-href="tracking.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4 12 14.01l-3-3"/></svg>
+      <span class="hi">स्थिति</span><span class="en">Status</span>
+    </button>
+  </nav>
+</div>
+
+<script src="js/app.js"></script>
+<script>
+  KM.requireAuth();
+  const s = KM.getState();
+  if (s.booking) {
+    document.getElementById("detail-center").textContent = s.booking.center + " / " + s.booking.centerEn;
+    document.getElementById("detail-date").textContent = s.booking.date + " 2026";
+    const timeMatch = s.booking.slotEn.match(/\(([^)]+)\)/);
+    document.getElementById("detail-time").textContent = timeMatch ? timeMatch[1] : s.booking.slotEn;
+    document.getElementById("detail-crop").textContent = s.booking.crop;
+  }
+</script>
+</body>
+</html>
