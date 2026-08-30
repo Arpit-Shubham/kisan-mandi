@@ -1,0 +1,29 @@
+{
+  "bookings": [
+    {
+      "bookingId": "BK-20261015-047",
+      "userPhone": "9876543210",
+      "userName": "Ramesh Ji",
+      "center": {
+        "nameHi": "हापुड़ मंडी - केंद्र अ",
+        "nameEn": "Hapur Mandi - Center A",
+        "gate": "Gate No. 2",
+        "distanceKm": 4.2
+      },
+      "date": "2026-10-15",
+      "timeSlot": {
+        "labelHi": "सुबह ८ - १० बजे",
+        "labelEn": "Morning (8:00 AM - 10:00 AM)"
+      },
+      "cropType": "गेहूं / Wheat",
+      "token": 47,
+      "status": "under_process",
+      "steps": [
+        { "key": "slot_booked",  "labelHi": "स्लॉट बुक हुआ",  "labelEn": "Slot Booked",  "state": "completed", "timestamp": "2026-10-15T08:30:00+05:30" },
+        { "key": "in_queue",     "labelHi": "कतार में हैं",    "labelEn": "In Queue",     "state": "completed", "timestamp": "2026-10-16T09:12:00+05:30" },
+        { "key": "under_process","labelHi": "प्रक्रिया में",    "labelEn": "Under Process","state": "active",    "note": "Crop Quality Check ongoing" },
+        { "key": "completed",   "labelHi": "पूर्ण",           "labelEn": "Completed",    "state": "pending",   "note": "Payment & Weighing receipt pending" }
+      ]
+    }
+  ]
+}
