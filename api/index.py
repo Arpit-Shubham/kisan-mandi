@@ -7,6 +7,10 @@ import os
 
 app = FastAPI(title="KisanMandi Serverless API")
 
+@app.get("/")
+def read_root():
+    return {"status": "online", "message": "KisanMandi API is operational"}
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
