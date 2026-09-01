@@ -1,177 +1,155 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>स्लॉट बुकिंग / Slot Booking — किसानमंडी KisanMandi</title>
-<meta name="description" content="अपना खरीद केंद्र, तारीख और समय स्लॉट चुनें / Choose your procurement center, date and time slot." />
-<link rel="stylesheet" href="css/style.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KisanMandi — Book Slot</title>
+  <link rel="stylesheet" href="css/style.css">
 </head>
-<body data-page="bookings">
-
-<div class="app">
-  <header class="app-header">
-    <button class="back-btn" onclick="window.location.href='home.html'" aria-label="वापस जाएं / Go back">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
-    </button>
-    <div class="title-group">
-      <h1>स्लॉट बुकिंग / Slot Booking</h1>
+<body>
+  <header>
+    <div class="header-inner">
+      <div class="brand-title">🌾 KisanMandi</div>
+      <nav class="desktop-nav">
+        <a href="home.html">Home</a>
+        <a href="book-slot.html" class="active">Book Slot</a>
+        <a href="queue-status.html">Live Queue</a>
+        <a href="tracking.html">Status</a>
+        <a href="admin.html">Admin</a>
+      </nav>
+      <div class="header-actions">
+        <button id="langToggleBtn" class="lang-btn" onclick="App.toggleLang()">हिंदी</button>
+      </div>
     </div>
   </header>
 
-  <!-- Step indicator -->
-  <nav class="stepper" aria-label="बुकिंग चरण / Booking steps">
-    <div class="step done">
-      <span class="dot" aria-hidden="true">1</span>
-      <span class="label">केंद्र / Center</span>
-    </div>
-    <div class="step-line done"></div>
-    <div class="step active">
-      <span class="dot" aria-hidden="true">2</span>
-      <span class="label">समय / Time</span>
-    </div>
-    <div class="step-line"></div>
-    <div class="step upcoming">
-      <span class="dot" aria-hidden="true">3</span>
-      <span class="label">पक्का / Done</span>
-    </div>
-  </nav>
+  <main class="app-container" style="max-width: 720px;">
+    <div class="card">
+      <h2 style="margin-bottom: 16px;">
+        <span class="hi">मंडी स्लॉट बुकिंग</span><span class="en">Procurement Slot Booking</span>
+      </h2>
 
-  <main class="app-main">
-    <div class="field-block" style="margin-top:8px;">
-      <label class="field-label" for="center-select">खरीद केंद्र चुनें / Selected Center</label>
-      <button type="button" class="select-box" id="center-select" aria-haspopup="listbox">
-        <span id="center-select-label">हापुड़ मंडी - केंद्र अ / Hapur Mandi</span>
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+      <div class="form-group">
+        <label><span class="hi">फसल का चयन करें</span><span class="en">Select Crop Category</span></label>
+        <select id="cropSelect" class="form-control">
+          <option value="Wheat (गेहूं)">Wheat (गेहूं)</option>
+          <option value="Paddy (धान)">Paddy (धान)</option>
+          <option value="Pulses (दालें)">Pulses (दालें)</option>
+          <option value="Other Cereals (मक्का / बाजरा)">Other Cereals (मक्का / बाजरा)</option>
+          <option value="Fruits (फल)">Fruits (फल)</option>
+          <option value="Vegetables (सब्जियां)">Vegetables (सब्जियां)</option>
+          <option value="Oilseeds (तिलहन / सरसों)">Oilseeds (तिलहन / सरसों)</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label><span class="hi">तारीख चुनें</span><span class="en">Select Booking Date</span></label>
+        <input type="date" id="dateInput" class="form-control" onchange="fetchAvailability()">
+      </div>
+
+      <label style="font-size: 0.9rem; font-weight: 600; display: block; margin-top: 14px;">
+        <span class="hi">उपलब्ध समय स्लॉट (प्रति स्लॉट १२ क्षमता)</span>
+        <span class="en">Available Time Slots (12 capacity each)</span>
+      </label>
+      
+      <div id="slotsContainer" class="slot-grid">
+        <p style="color: var(--text-muted); font-size: 0.9rem;">Fetching live slot capacity...</p>
+      </div>
+
+      <button id="bookBtn" class="btn btn-primary" style="margin-top: 24px;" onclick="confirmBooking()" disabled>
+        <span class="hi">स्लॉट बुक करें</span><span class="en">Confirm Slot Booking</span>
       </button>
     </div>
-
-    <div class="field-block">
-      <label class="field-label" id="date-label">तारीख चुनें / Select Date</label>
-      <div class="date-chip-row" role="listbox" aria-labelledby="date-label" id="date-chips">
-        <button type="button" class="date-chip selected" role="option" aria-selected="true" data-date="15 Oct" data-label="आज / Today">
-          <div class="en">आज / Today</div>
-          <div class="day">15 Oct</div>
-        </button>
-        <button type="button" class="date-chip" role="option" aria-selected="false" data-date="16 Oct" data-label="कल / Tomorrow">
-          <div class="en">कल / Tomorrow</div>
-          <div class="day">16 Oct</div>
-        </button>
-        <button type="button" class="date-chip" role="option" aria-selected="false" data-date="17 Oct" data-label="गुरु / Thu">
-          <div class="en">गुरु / Thu</div>
-          <div class="day">17 Oct</div>
-        </button>
-        <button type="button" class="date-chip" role="option" aria-selected="false" data-date="18 Oct" data-label="शुक्र / Fri">
-          <div class="en">शुक्र / Fri</div>
-          <div class="day">18 Oct</div>
-        </button>
-      </div>
-    </div>
-
-    <div class="field-block">
-      <label class="field-label" id="slot-label">समय स्लॉट चुनें / Select Time Slot</label>
-      <div class="slot-list" role="radiogroup" aria-labelledby="slot-label" id="slot-list">
-        <button type="button" class="slot-option selected" role="radio" aria-checked="true"
-          data-hi="सुबह ८ - १० बजे" data-en="Morning (8:00 AM - 10:00 AM)">
-          <span>
-            <span class="hi">सुबह ८ - १० बजे</span>
-            <span class="en">Morning (8:00 AM - 10:00 AM)</span>
-          </span>
-          <span class="avail">12 स्लॉट खाली / slots left</span>
-        </button>
-
-        <button type="button" class="slot-option" role="radio" aria-checked="false"
-          data-hi="दोपहर १० - १२ बजे" data-en="Midday (10:00 AM - 12:00 PM)">
-          <span>
-            <span class="hi">दोपहर १० - १२ बजे</span>
-            <span class="en">Midday (10:00 AM - 12:00 PM)</span>
-          </span>
-          <span class="avail">5 स्लॉट खाली / slots left</span>
-        </button>
-
-        <button type="button" class="slot-option full" role="radio" aria-checked="false" aria-disabled="true" disabled
-          data-hi="दोपहर १ - ३ बजे" data-en="Afternoon (1:00 PM - 3:00 PM)">
-          <span>
-            <span class="hi">दोपहर १ - ३ बजे</span>
-            <span class="en">Afternoon (1:00 PM - 3:00 PM)</span>
-          </span>
-          <span class="avail">फुल / Full</span>
-        </button>
-      </div>
-    </div>
   </main>
+  <div id="toast"></div>
 
-  <div class="sticky-cta">
-    <button type="button" class="btn btn-primary" id="confirm-btn">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
-      बुकिंग पक्की करें / Confirm Booking
-    </button>
-  </div>
-
-  <nav class="bottom-nav" aria-label="मुख्य नेविगेशन / Main navigation">
-    <button class="nav-item" data-nav="home" data-href="home.html">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/><path d="M9 22V12h6v10"/></svg>
-      <span class="hi">होम</span><span class="en">Home</span>
-    </button>
-    <button class="nav-item" data-nav="bookings" data-href="book-slot.html">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
-      <span class="hi">बुकिंग</span><span class="en">Bookings</span>
-    </button>
-    <button class="nav-item" data-nav="queue" data-href="queue-status.html">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-      <span class="hi">कतार</span><span class="en">Queue</span>
-    </button>
-    <button class="nav-item" data-nav="status" data-href="tracking.html">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4 12 14.01l-3-3"/></svg>
-      <span class="hi">स्थिति</span><span class="en">Status</span>
-    </button>
+  <nav class="mobile-nav">
+    <a href="home.html" class="nav-tab"><span>🏠</span><span>Home</span></a>
+    <a href="book-slot.html" class="nav-tab active"><span>📅</span><span>Book</span></a>
+    <a href="queue-status.html" class="nav-tab"><span>⏱️</span><span>Queue</span></a>
+    <a href="tracking.html" class="nav-tab"><span>📋</span><span>Status</span></a>
   </nav>
-</div>
 
-<script src="js/app.js"></script>
-<script>
-  KM.requireAuth();
+  <script src="js/app.js"></script>
+  <script>
+    App.initAuthGuard();
+    const user = App.getUser();
+    let selectedChunk = null;
 
-  // Date chip selection
-  const dateChips = document.querySelectorAll(".date-chip");
-  let selectedDate = { date: "15 Oct", label: "आज / Today" };
-  dateChips.forEach((chip) => {
-    chip.addEventListener("click", () => {
-      dateChips.forEach((c) => { c.classList.remove("selected"); c.setAttribute("aria-selected", "false"); });
-      chip.classList.add("selected");
-      chip.setAttribute("aria-selected", "true");
-      selectedDate = { date: chip.dataset.date, label: chip.dataset.label };
-    });
-  });
+    document.getElementById('dateInput').valueAsDate = new Date();
 
-  // Time slot selection
-  const slotOptions = document.querySelectorAll(".slot-option:not(.full)");
-  let selectedSlot = { hi: "सुबह ८ - १० बजे", en: "Morning (8:00 AM - 10:00 AM)" };
-  slotOptions.forEach((opt) => {
-    opt.addEventListener("click", () => {
-      document.querySelectorAll(".slot-option").forEach((o) => { o.classList.remove("selected"); o.setAttribute("aria-checked", "false"); });
-      opt.classList.add("selected");
-      opt.setAttribute("aria-checked", "true");
-      selectedSlot = { hi: opt.dataset.hi, en: opt.dataset.en };
-    });
-  });
+    async function fetchAvailability() {
+      const date = document.getElementById('dateInput').value;
+      if (!date) return;
+      try {
+        const res = await fetch(`${API_BASE}/slots/availability?date=${date}&mandi_id=${user.mandi.id}`);
+        const data = await res.json();
+        renderSlots(data.slots);
+      } catch (e) {
+        App.showToast('Could not fetch slot availability');
+      }
+    }
 
-  // Confirm booking
-  document.getElementById("confirm-btn").addEventListener("click", () => {
-    const s = KM.getState();
-    KM.setState({
-      booking: {
-        ...s.booking,
-        date: selectedDate.date,
-        dateLabel: selectedDate.label,
-        slotHi: selectedSlot.hi,
-        slotEn: selectedSlot.en,
-        bookedAt: selectedDate.date + ", " + selectedSlot.hi.split(" ")[0] ,
-      },
-    });
-    KM.toast("बुकिंग पक्की हुई / Booking confirmed");
-    setTimeout(() => { window.location.href = "queue-status.html"; }, 500);
-  });
-</script>
+    function renderSlots(slots) {
+      const container = document.getElementById('slotsContainer');
+      container.innerHTML = '';
+      selectedChunk = null;
+      document.getElementById('bookBtn').disabled = true;
+
+      slots.forEach(s => {
+        const div = document.createElement('div');
+        div.className = `slot-item ${s.is_full ? 'full' : ''}`;
+        div.innerHTML = `
+          <div>
+            <strong>${s.chunk}</strong>
+          </div>
+          <span class="badge ${s.remaining > 0 ? 'badge-success' : 'badge-danger'}">
+            ${s.remaining} / 12 slots available
+          </span>
+        `;
+        if (!s.is_full) {
+          div.onclick = () => {
+            document.querySelectorAll('.slot-item').forEach(el => el.classList.remove('active'));
+            div.classList.add('active');
+            selectedChunk = s.chunk;
+            document.getElementById('bookBtn').disabled = false;
+          };
+        }
+        container.appendChild(div);
+      });
+    }
+
+    async function confirmBooking() {
+      if (!selectedChunk) return;
+      const crop = document.getElementById('cropSelect').value;
+      const date = document.getElementById('dateInput').value;
+
+      try {
+        const res = await fetch(`${API_BASE}/slots/book`, {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({
+            phone: user.phone,
+            mandi_id: user.mandi.id,
+            date,
+            time_chunk: selectedChunk,
+            crop_type: crop
+          })
+        });
+        const data = await res.json();
+        if (res.ok) {
+          localStorage.setItem('km_last_token', data.booking.token);
+          App.showToast('Slot booked successfully!');
+          setTimeout(() => { window.location.href = 'queue-status.html'; }, 1000);
+        } else {
+          App.showToast(data.detail || 'Slot booking failed');
+        }
+      } catch (e) {
+        App.showToast('Network error while booking slot');
+      }
+    }
+
+    fetchAvailability();
+  </script>
 </body>
 </html>
