@@ -17,8 +17,8 @@ const App = {
     if (btn) btn.innerText = lang === 'hi' ? 'English' : 'हिंदी';
   },
   getUser() {
-    const u = localStorage.getItem('km_user');
-    return u ? JSON.parse(u) : null;
+    const user = localStorage.getItem('km_user');
+    return user ? JSON.parse(user) : null;
   },
   setUser(user) {
     localStorage.setItem('km_user', JSON.stringify(user));
@@ -28,7 +28,7 @@ const App = {
     if (!t) return;
     t.innerText = msg;
     t.style.display = 'block';
-    setTimeout(() => { t.style.display = 'none'; }, 3000);
+    setTimeout(() => { t.style.display = 'none'; }, 3500);
   },
   initAuthGuard(isLoginPage = false) {
     const user = this.getUser();
