@@ -7,20 +7,22 @@
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <div class="container">
-    <header>
-      <h1>🌾 किसानमंडी / KisanMandi</h1>
+  <header>
+    <div class="header-inner">
+      <div class="brand-title">🌾 KisanMandi</div>
       <button id="langToggleBtn" class="lang-btn" onclick="App.toggleLang()">हिंदी</button>
-    </header>
+    </div>
+  </header>
 
-    <div class="card" style="margin-top: 30px;">
-      <h2 style="font-size: 1.2rem; margin-bottom: 12px;">
-        <span class="hi">किसान सत्यापन</span>
-        <span class="en">Farmer Login</span>
+  <main class="app-container" style="max-width: 480px; margin-top: 40px;">
+    <div class="card">
+      <h2 style="font-size: 1.3rem; margin-bottom: 8px;">
+        <span class="hi">किसान लॉगिन / पंजीकरण</span>
+        <span class="en">Farmer Login & Registration</span>
       </h2>
-      <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 16px;">
-        <span class="hi">अपना विवरण दर्ज करें और ओटीपी सत्यापित करें</span>
-        <span class="en">Enter your details to verify your profile</span>
+      <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px;">
+        <span class="hi">अपने पंजीकृत मोबाइल नंबर से प्रवेश करें</span>
+        <span class="en">Access your procurement mandi dashboard</span>
       </p>
 
       <div id="step-details">
@@ -43,24 +45,24 @@
         </div>
         <div class="form-group">
           <label><span class="hi">मोबाइल नंबर</span><span class="en">Mobile Number</span></label>
-          <input type="tel" id="phoneInput" class="form-control" placeholder="10-digit mobile number" maxlength="10">
+          <input type="tel" id="phoneInput" class="form-control" placeholder="10-digit phone number" maxlength="10">
         </div>
         <button class="btn btn-primary" onclick="sendOTP()">
-          <span class="hi">ओटीपी भेजें</span><span class="en">Send OTP</span>
+          <span class="hi">ओटीपी प्राप्त करें</span><span class="en">Send OTP</span>
         </button>
       </div>
 
       <div id="step-otp" style="display: none;">
         <div class="form-group">
-          <label><span class="hi">ओटीपी दर्ज करें</span><span class="en">Enter 4-Digit OTP</span></label>
-          <input type="number" id="otpInput" class="form-control" placeholder="Default: 1234">
+          <label><span class="hi">४-अंकों का ओटीपी दर्ज करें</span><span class="en">Enter 4-Digit OTP</span></label>
+          <input type="number" id="otpInput" class="form-control" placeholder="Enter OTP received via SMS">
         </div>
         <button class="btn btn-primary" onclick="verifyOTP()">
-          <span class="hi">सत्यापित करें एवं लॉगिन करें</span><span class="en">Verify & Login</span>
+          <span class="hi">सत्यापित करें एवं आगे बढ़ें</span><span class="en">Verify & Login</span>
         </button>
       </div>
     </div>
-  </div>
+  </main>
   <div id="toast"></div>
 
   <script src="js/app.js"></script>
@@ -73,7 +75,7 @@
       const phone = document.getElementById('phoneInput').value.trim();
 
       if (!name || phone.length !== 10) {
-        return App.showToast('Please enter valid name and 10-digit phone');
+        return App.showToast('Please enter a valid name and 10-digit number');
       }
 
       try {
@@ -84,14 +86,14 @@
         });
         const data = await res.json();
         if (res.ok) {
-          App.showToast('OTP sent: Use 1234');
+          App.showToast('OTP sent to your phone');
           document.getElementById('step-details').style.display = 'none';
           document.getElementById('step-otp').style.display = 'block';
         } else {
-          App.showToast(data.detail || 'Error sending OTP');
+          App.showToast(data.detail || 'Failed to send OTP');
         }
       } catch (e) {
-        App.showToast('Network error');
+        App.showToast('Server connection error');
       }
     }
 
@@ -110,10 +112,10 @@
           App.setUser(data.user);
           window.location.href = 'home.html';
         } else {
-          App.showToast(data.detail || 'Invalid OTP');
+          App.showToast(data.detail || 'Invalid verification code');
         }
       } catch (e) {
-        App.showToast('Network error');
+        App.showToast('Server connection error');
       }
     }
   </script>
