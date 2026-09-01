@@ -7,24 +7,35 @@
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <div class="container">
-    <header>
-      <h1>📋 <span class="hi">ट्रैकिंग स्थिति</span><span class="en">Booking Tracking</span></h1>
-      <button id="langToggleBtn" class="lang-btn" onclick="App.toggleLang()">हिंदी</button>
-    </header>
-
-    <div class="card" id="trackingDetails">
-      <p style="font-size: 0.9rem; color: var(--text-muted);">Loading your active booking...</p>
+  <header>
+    <div class="header-inner">
+      <div class="brand-title">🌾 KisanMandi</div>
+      <nav class="desktop-nav">
+        <a href="home.html">Home</a>
+        <a href="book-slot.html">Book Slot</a>
+        <a href="queue-status.html">Live Queue</a>
+        <a href="tracking.html" class="active">Status</a>
+        <a href="admin.html">Admin</a>
+      </nav>
+      <div class="header-actions">
+        <button id="langToggleBtn" class="lang-btn" onclick="App.toggleLang()">हिंदी</button>
+      </div>
     </div>
+  </header>
 
-    <nav class="bottom-nav">
-      <a href="home.html" class="nav-item">🏠<span>Home</span></a>
-      <a href="book-slot.html" class="nav-item">📅<span>Book</span></a>
-      <a href="queue-status.html" class="nav-item">⏱️<span>Queue</span></a>
-      <a href="tracking.html" class="nav-item active">📋<span>Status</span></a>
-    </nav>
-  </div>
+  <main class="app-container" style="max-width: 680px;">
+    <div class="card" id="trackingDetails">
+      <p style="color: var(--text-muted);">Fetching your active procurement details...</p>
+    </div>
+  </main>
   <div id="toast"></div>
+
+  <nav class="mobile-nav">
+    <a href="home.html" class="nav-tab"><span>🏠</span><span>Home</span></a>
+    <a href="book-slot.html" class="nav-tab"><span>📅</span><span>Book</span></a>
+    <a href="queue-status.html" class="nav-tab"><span>⏱️</span><span>Queue</span></a>
+    <a href="tracking.html" class="nav-tab active"><span>📋</span><span>Status</span></a>
+  </nav>
 
   <script src="js/app.js"></script>
   <script>
@@ -33,7 +44,7 @@
 
     async function loadTracking() {
       if (!token) {
-        document.getElementById('trackingDetails').innerHTML = `<p>No active booking found.</p>`;
+        document.getElementById('trackingDetails').innerHTML = `<p style="color:var(--text-muted)">No active booking found.</p>`;
         return;
       }
       try {
@@ -41,19 +52,21 @@
         const data = await res.json();
         const b = data.user_booking;
         if (!b) {
-          document.getElementById('trackingDetails').innerHTML = `<p>No active record for token ${token}</p>`;
+          document.getElementById('trackingDetails').innerHTML = `<p>No booking record found for Token: ${token}</p>`;
           return;
         }
 
         document.getElementById('trackingDetails').innerHTML = `
-          <div class="card-header">Token: ${b.token}</div>
-          <div style="margin-bottom: 8px;"><strong>Crop:</strong> ${b.crop}</div>
-          <div style="margin-bottom: 8px;"><strong>Date & Time:</strong> ${b.date} (${b.time_chunk})</div>
-          <div style="margin-bottom: 8px;"><strong>Queue Status:</strong> <span class="badge badge-success">${b.status}</span></div>
-          <div style="margin-bottom: 8px;"><strong>Payment:</strong> <span class="badge ${b.payment_status === 'Paid' ? 'badge-success' : 'badge-danger'}">${b.payment_status}</span></div>
+          <h2 style="margin-bottom: 12px;">Token: ${b.token}</h2>
+          <div style="display:flex; flex-direction:column; gap: 10px; margin-top: 14px;">
+            <div><strong>Crop Type:</strong> ${b.crop}</div>
+            <div><strong>Date & Time Slot:</strong> ${b.date} (${b.time_chunk})</div>
+            <div><strong>Queue State:</strong> <span class="badge badge-success">${b.status}</span></div>
+            <div><strong>Payment Status:</strong> <span class="badge ${b.payment_status === 'Paid' ? 'badge-success' : 'badge-warning'}">${b.payment_status}</span></div>
+          </div>
         `;
       } catch (e) {
-        App.showToast('Failed to load tracking');
+        App.showToast('Failed to load tracking data');
       }
     }
     loadTracking();
